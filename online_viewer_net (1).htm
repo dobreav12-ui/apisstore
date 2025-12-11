@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApisStore | Miere, Produse Apicole & Cosmetice</title>
+    <!-- Tailwind CSS pentru design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- CULORI & STILURI --- */
+        :root {
+            --primary: #d97706; 
+            --secondary: #fcd34d; 
+            --text-dark: #451a03; 
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: #fffbeb; 
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        /* Etichete Categorii */
+        .tag-miere { background-color: #fef3c7; color: #d97706; }
+        .tag-apicol { background-color: #ecfccb; color: #4d7c0f; }
+        .tag-cosmetic { background-color: #fce7f3; color: #be185d; }
+
+        /* Modal */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- LOGO -->
+            <a href="#" class="flex items-center gap-3 text-2xl font-black text-amber-800">
+                <!-- Aici se încarcă logo-ul tău local 'logo.jpg' sau '22217.jpg' -->
+                <img src="22217.jpeg" 
+                     onerror="this.src='https://placehold.co/100x100/fcd34d/451a03?text=Logo'" 
+                     alt="ApisStore Logo" 
+                     class="h-12 w-12 object-contain rounded-full border-2 border-amber-100"> 
+                Apis<span class="text-yellow-500">Store</span>
+            </a>
+
+            <!-- NAVIGARE DESKTOP -->
+            <nav class="hidden md:flex gap-6 font-semibold text-gray-700 items-center">
+                <a href="#miere" class="hover:text-amber-600 transition">Miere</a>
+                <a href="#apicole" class="hover:text-green-600 transition">Produse Apicole</a>
+                <a href="#cosmetice" class="hover:text-pink-600 transition">Cosmetice</a>
+                <a href="#recenzii" class="hover:text-amber-800 transition">Recenzii</a>
+                
+                <button onclick="openCartModal()" class="flex items-center gap-2 bg-amber-100 px-4 py-2 rounded-full text-amber-800 hover:bg-amber-200 transition shadow-sm border border-amber-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span id="cart-count" class="font-bold">0</span>
+                </button>
+            </nav>
+
+            <!-- BUTON MENIU MOBIL -->
+            <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 text-amber-800 text-2xl">
+                ☰
+            </button>
+        </div>
+        
+        <!-- MENU MOBIL (DROPDOWN) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-4 flex flex-col gap-4 shadow-lg">
+            <a href="#miere" class="font-medium p-2 hover:bg-amber-50 rounded">Miere</a>
+            <a href="#apicole" class="font-medium p-2 hover:bg-green-50 rounded">Produse Apicole</a>
+            <a href="#cosmetice" class="font-medium p-2 hover:bg-pink-50 rounded">Cosmetice</a>
+            <a href="#recenzii" class="font-medium p-2 hover:bg-amber-50 rounded">Recenzii</a>
+            <button onclick="openCartModal()" class="text-left font-bold text-amber-600 border-t pt-2 mt-2">Coșul Meu</button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <!-- Banner-ul principal -->
+    <section class="relative py-20 bg-cover bg-center" style="background-color: #f59e0b; background-image: linear-gradient(rgba(255, 251, 235, 0.9), rgba(255, 255, 255, 0.6)), url('banner.jpg');">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-black text-amber-900 mb-6 leading-tight drop-shadow-sm">
+                Gustul Autentic al Naturii 🌿
+            </h1>
+            <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto font-medium">
+                Descoperă gama noastră completă: de la miere pură și mixuri energizante, până la cosmetice naturale delicate cu pielea ta.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#miere" class="px-8 py-3 bg-amber-600 text-white rounded-full font-bold shadow-lg hover:bg-amber-700 transition transform hover:scale-105 border-2 border-transparent">Comandă Miere</a>
+                <a href="#cosmetice" class="px-8 py-3 bg-white/80 backdrop-blur-sm text-amber-600 border-2 border-amber-600 rounded-full font-bold shadow-sm hover:bg-amber-50 transition">Vezi Cosmetice</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATALOG PRODUSE -->
+    <main class="container mx-auto px-4 py-12 flex-grow">
+        
+        <!-- 1. CATEGORIA MIERE -->
+        <div id="miere" class="mb-20 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="text-3xl font-bold text-amber-900">Miere</h2>
+                <div class="h-1 flex-grow bg-amber-200 rounded opacity-50"></div>
+            </div>
+            <div id="grid-miere" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- JS va genera produsele aici -->
+            </div>
+        </div>
+
+        <!-- 2. CATEGORIA PRODUSE APICOLE -->
+        <div id="apicole" class="mb-20 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="text-3xl font-bold text-green-900">Produse Apicole</h2>
+                <div class="h-1 flex-grow bg-green-200 rounded opacity-50"></div>
+            </div>
+            <div id="grid-apicole" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- JS va genera produsele aici -->
+            </div>
+        </div>
+
+        <!-- 3. CATEGORIA COSMETICE -->
+        <div id="cosmetice" class="mb-20 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="text-3xl font-bold text-pink-900">Cosmetice Naturale</h2>
+                <div class="h-1 flex-grow bg-pink-200 rounded opacity-50"></div>
+            </div>
+            <div id="grid-cosmetice" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- JS va genera produsele aici -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SECȚIUNEA RECENZII -->
+    <section id="recenzii" class="bg-amber-50 py-16 mb-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-amber-900 mb-12">Ce Spun Clienții Noștri 💛</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Recenzie 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-amber-100">
+                    <div class="text-yellow-400 text-xl mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="italic text-gray-600 mb-4">"Cea mai bună miere de salcâm! Este atât de clară și aromată. Copiii mei o adoră pe clătite."</p>
+                    <div class="font-bold text-amber-800 flex items-center gap-2">
+                        <div class="w-8 h-8 bg-amber-200 rounded-full flex items-center justify-center text-amber-800 text-xs">EP</div>
+                        Elena Popescu
+                    </div>
+                </div>
+
+                <!-- Recenzie 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-amber-100">
+                    <div class="text-yellow-400 text-xl mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="italic text-gray-600 mb-4">"Folosesc tinctura de propolis pentru imunitate și sunt foarte mulțumit. Produse cu adevărat naturale."</p>
+                    <div class="font-bold text-amber-800 flex items-center gap-2">
+                        <div class="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center text-green-800 text-xs">MI</div>
+                        Marius Ionescu
+                    </div>
+                </div>
+
+                <!-- Recenzie 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-amber-100">
+                    <div class="text-yellow-400 text-xl mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="italic text-gray-600 mb-4">"Cremă hidratantă cu miere este genială! Nu am găsit nimic mai bun în farmacii. Recomand!"</p>
+                    <div class="font-bold text-amber-800 flex items-center gap-2">
+                        <div class="w-8 h-8 bg-pink-200 rounded-full flex items-center justify-center text-pink-800 text-xs">AM</div>
+                        Ana Maria
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-amber-900 text-amber-100 py-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+                <h3 class="text-2xl font-bold mb-4 text-white">ApisStore</h3>
+                <p class="opacity-80">Aducem sănătate pură din stupină direct la tine acasă. Produse 100% naturale, recoltate cu grijă.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white text-lg mb-4">Contact</h4>
+                <p class="mb-2">📞 07xx xxx xxx</p>
+                <p class="mb-2">📧 contact@apisstore.ro</p>
+                <p>📍 Satul Apicol, România</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white text-lg mb-4">Link-uri Utile</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-white transition">Politica de Confidențialitate</a></li>
+                    <li><a href="#" class="hover:text-white transition">Termeni și Condiții</a></li>
+                    <li><a href="#" class="hover:text-white transition">Livrare și Retur</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-10 pt-6 border-t border-amber-800 opacity-60 text-sm">
+            &copy; 2025 ApisStore. Toate drepturile rezervate.
+        </div>
+    </footer>
+
+    <!-- MODAL COS (CART) -->
+    <div id="cart-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 flex justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl p-6 flex flex-col transform transition-transform translate-x-full duration-300" id="cart-panel">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Coșul Tău 🍯</h2>
+                <button onclick="closeCartModal()" class="text-gray-400 hover:text-red-500 text-3xl font-light">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="flex-grow overflow-y-auto space-y-4 pr-2">
+                <!-- Itemele vor fi generate aici -->
+            </div>
+
+            <div class="border-t pt-4 mt-4 bg-gray-50 p-4 rounded-xl">
+                <div class="flex justify-between text-xl font-bold mb-4 text-gray-800">
+                    <span>Total:</span>
+                    <span id="cart-total">0 RON</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-green-600 text-white hover:bg-green-700 py-3 rounded-xl font-bold text-lg transition shadow-lg flex justify-center items-center gap-2">
+                    <span>Comandă pe WhatsApp</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICARE -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <span>✅</span> Produs adăugat în coș!
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // --- CONFIGURARE PRODUSE CU IMAGINI LOCALE ---
+        // Asigură-te că fișierele .jpg sunt în același folder!
+        const catalog = [
+            // --- MIERE ---
+            { id: 101, name: "Miere Polifloră", cat: "miere", price: 35, img: "miere-poliflora.jpeg" },
+            { id: 102, name: "Miere de Tei", cat: "miere", price: 40, img: "miere-tei.jpeg" },
+            { id: 103, name: "Miere de Salcâm", cat: "miere", price: 45, img: "miere-salcam.jpeg" },
+            { id: 104, name: "Miere de Floarea-soarelui", cat: "miere", price: 30, img: "miere-floarea-soarelui.jpeg" },
+
+            // --- PRODUSE APICOLE ---
+            { id: 201, name: "Polen Crud / Uscat", cat: "apicole", price: 40, img: "polen.jpg" },
+            { id: 202, name: "Propolis (Tinctură)", cat: "apicole", price: 30, img: "propolis.jpg" },
+            { id: 203, name: "Lăptișor de Matcă", cat: "apicole", price: 85, img: "laptisor.jpg" },
+            { id: 204, name: "Mix Energizant", desc: "Miere + Nuci + Fructe", cat: "apicole", price: 55, img: "mix-energizant.jpg" },
+
+            // --- COSMETICE NATURALE ---
+            { id: 301, name: "Balsam de Buze", desc: "Cu ceară de albine", cat: "cosmetice", price: 15, img: "balsam-buze.jpg" },
+            { id: 302, name: "Cremă Hidratantă", desc: "Cu miere și gălbenele", cat: "cosmetice", price: 65, img: "crema.jpg" },
+            { id: 303, name: "Săpunuri Naturale", desc: "Handmade", cat: "cosmetice", price: 20, img: "sapun.jpg" },
+            { id: 304, name: "Scrub Facial", desc: "Cu miere cristalizată", cat: "cosmetice", price: 35, img: "scrub.jpg" }
+        ];
+
+        let cart = {};
+
+        // --- RENDERIZARE ---
+        function renderProducts() {
+            catalog.forEach(prod => {
+                const containerId = `grid-${prod.cat}`;
+                const container = document.getElementById(containerId);
+                
+                if(container) {
+                    const card = document.createElement('div');
+                    card.className = "product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full";
+                    // Design card produs
+                    card.innerHTML = `
+                        <div class="relative h-56 overflow-hidden group">
+                            <!-- Dacă imaginea nu este găsită, se afișează una gri de rezervă -->
+                            <img src="${prod.img}" 
+                                 onerror="this.src='https://placehold.co/400x300/e5e7eb/a3a3a3?text=Fara+Imagine'" 
+                                 alt="${prod.name}" 
+                                 class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            <span class="absolute top-3 right-3 text-xs font-bold px-3 py-1 rounded-full uppercase shadow-sm tag-${prod.cat}">
+                                ${prod.cat}
+                            </span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="font-bold text-xl text-gray-800 mb-1">${prod.name}</h3>
+                            ${prod.desc ? `<p class="text-sm text-gray-500 mb-4">${prod.desc}</p>` : '<div class="mb-4"></div>'}
+                            <div class="mt-auto flex justify-between items-center pt-2 border-t border-gray-50">
+                                <span class="text-2xl font-bold text-amber-600">${prod.price} <span class="text-sm">RON</span></span>
+                                <button onclick="addToCart(${prod.id})" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-700 transition font-medium shadow-md active:scale-95">
+                                    Adaugă
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+            updateCartUI(); 
+        }
+
+        // --- FUNCȚII COȘ ---
+        function addToCart(id) {
+            if(cart[id]) cart[id]++;
+            else cart[id] = 1;
+            updateCartUI();
+            showToast();
+        }
+
+        function removeFromCart(id) {
+            if(cart[id]) {
+                delete cart[id];
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const countEl = document.getElementById('cart-count');
+            
+            cartContainer.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            const itemIds = Object.keys(cart);
+
+            if(itemIds.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        <p>Coșul este gol 🐝</p>
+                    </div>`;
+            } else {
+                itemIds.forEach(id => {
+                    const prod = catalog.find(p => p.id == id);
+                    const qty = cart[id];
+                    const subtotal = prod.price * qty;
+                    total += subtotal;
+                    count += qty;
+
+                    cartContainer.innerHTML += `
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 mb-2">
+                            <div class="flex items-center gap-3">
+                                <img src="${prod.img}" onerror="this.src='https://placehold.co/100x100?text=IMG'" class="w-14 h-14 rounded-lg object-cover border border-gray-200">
+                                <div>
+                                    <p class="font-bold text-sm text-gray-800">${prod.name}</p>
+                                    <p class="text-xs text-gray-500">${qty} x ${prod.price} RON</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-amber-700">${subtotal}</span>
+                                <button onclick="removeFromCart(${id})" class="text-gray-400 hover:text-red-500 transition p-1 rounded-md hover:bg-red-50">&times;</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            totalEl.innerText = total + " RON";
+            countEl.innerText = count;
+        }
+
+        function openCartModal() {
+            const modal = document.getElementById('cart-modal');
+            const panel = document.getElementById('cart-panel');
+            modal.classList.add('active');
+            setTimeout(() => { panel.classList.remove('translate-x-full'); }, 10);
+        }
+
+        function closeCartModal() {
+            const modal = document.getElementById('cart-modal');
+            const panel = document.getElementById('cart-panel');
+            panel.classList.add('translate-x-full');
+            setTimeout(() => { modal.classList.remove('active'); }, 300);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2500);
+        }
+
+        // --- CHECKOUT WHATSAPP ---
+        function checkout() {
+            if(Object.keys(cart).length === 0) return alert("Coșul este gol!");
+
+            let message = "Salut! Vreau să comand de pe ApisStore:\n";
+            let total = 0;
+            for(let id in cart) {
+                const prod = catalog.find(p => p.id == id);
+                message += `- ${cart[id]} x ${prod.name} (${prod.price * cart[id]} RON)\n`;
+                total += prod.price * cart[id];
+            }
+            message += `\nTotal de plată: ${total} RON\n\nAdresa de livrare: ...`;
+            
+            // INTRODU AICI NUMĂRUL TĂU DE TELEFON (ex: 40722123456)
+            const phoneNumber = "40700000000"; 
+            
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Pornire aplicație
+        document.addEventListener('DOMContentLoaded', renderProducts);
+    </script>
+</body>
+</html>
