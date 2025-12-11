@@ -50,7 +50,7 @@
             <!-- LOGO -->
             <a href="#" class="flex items-center gap-3 text-2xl font-black text-amber-800">
                 <!-- Aici se încarcă logo-ul tău local 'logo.jpg' sau '22217.jpg' -->
-                <img src="22217.jpeg" 
+                <img src="logo.jpeg" 
                      onerror="this.src='https://placehold.co/100x100/fcd34d/451a03?text=Logo'" 
                      alt="ApisStore Logo" 
                      class="h-12 w-12 object-contain rounded-full border-2 border-amber-100"> 
@@ -87,7 +87,6 @@
     </header>
 
     <!-- HERO SECTION -->
-    <!-- Banner-ul principal -->
     <section class="relative py-20 bg-cover bg-center" style="background-color: #f59e0b; background-image: linear-gradient(rgba(255, 251, 235, 0.9), rgba(255, 255, 255, 0.6)), url('banner.jpg');">
         <div class="container mx-auto px-4 text-center relative z-10">
             <h1 class="text-4xl md:text-6xl font-black text-amber-900 mb-6 leading-tight drop-shadow-sm">
@@ -100,6 +99,23 @@
                 <a href="#miere" class="px-8 py-3 bg-amber-600 text-white rounded-full font-bold shadow-lg hover:bg-amber-700 transition transform hover:scale-105 border-2 border-transparent">Comandă Miere</a>
                 <a href="#cosmetice" class="px-8 py-3 bg-white/80 backdrop-blur-sm text-amber-600 border-2 border-amber-600 rounded-full font-bold shadow-sm hover:bg-amber-50 transition">Vezi Cosmetice</a>
             </div>
+        </div>
+    </section>
+
+    <!-- SECȚIUNE VIDEO (NOU) -->
+    <section class="py-12 bg-white border-b border-amber-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-amber-900 mb-8">Aici gasesti tot ce ai nevoie🎥</h2>
+            
+            <!-- Container Video -->
+            <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-50 bg-black">
+                <!-- IMPORTANT: Pune un fișier video numit 'video.mp4' în același folder -->
+                <video controls class="w-full h-auto aspect-video">
+                    <source src="promovare.mp4" type="video/mp4">
+                    Browser-ul tău nu suportă elementul video.
+                </video>
+            </div>
+            <p class="mt-4 text-gray-500 italic text-sm">Toate produsele noastre sunt atent prelucrate.</p>
         </div>
     </section>
 
@@ -185,13 +201,21 @@
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
                 <h3 class="text-2xl font-bold mb-4 text-white">ApisStore</h3>
-                <p class="opacity-80">Aducem sănătate pură din stupină direct la tine acasă. Produse 100% naturale, recoltate cu grijă.</p>
+                <p class="opacity-80 mb-6">Aducem sănătate pură din stupină direct la tine acasă. Produse 100% naturale, recoltate cu grijă.</p>
+                
+                <!-- LINK INSTAGRAM (NOU) -->
+                <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-3 text-white hover:text-pink-300 transition group">
+                    <div class="p-2 rounded-lg bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                    <span class="font-bold">Urmărește-ne pe Instagram</span>
+                </a>
             </div>
             <div>
                 <h4 class="font-bold text-white text-lg mb-4">Contact</h4>
-                <p class="mb-2">📞 07xx xxx xxx</p>
+                <p class="mb-2">📞 0771 405 886</p>
                 <p class="mb-2">📧 contact@apisstore.ro</p>
-                <p>📍 Satul Apicol, România</p>
+                <p>📍 Neamt, România</p>
             </div>
             <div>
                 <h4 class="font-bold text-white text-lg mb-4">Link-uri Utile</h4>
@@ -203,7 +227,7 @@
             </div>
         </div>
         <div class="text-center mt-10 pt-6 border-t border-amber-800 opacity-60 text-sm">
-            &copy; 2025 ApisStore. Toate drepturile rezervate.
+            &copy; 2025 ApisStore.SRL Toate drepturile rezervate.
         </div>
     </footer>
 
@@ -244,14 +268,14 @@
         const catalog = [
             // --- MIERE ---
             { id: 101, name: "Miere Polifloră", cat: "miere", price: 35, img: "miere-poliflora.jpeg" },
-            { id: 102, name: "Miere de Tei", cat: "miere", price: 40, img: "miere-tei.jpeg" },
+            { id: 102, name: "Miere de Tei", cat: "miere", price: 40, img: "miere-tei.png" },
             { id: 103, name: "Miere de Salcâm", cat: "miere", price: 45, img: "miere-salcam.jpeg" },
-            { id: 104, name: "Miere de Floarea-soarelui", cat: "miere", price: 30, img: "miere-floarea-soarelui.jpeg" },
+            { id: 104, name: "Miere de Floarea-soarelui", cat: "miere", price: 30, img: "miere-floarea-soarelui.png" },
 
             // --- PRODUSE APICOLE ---
-            { id: 201, name: "Polen Crud / Uscat", cat: "apicole", price: 40, img: "polen.jpg" },
-            { id: 202, name: "Propolis (Tinctură)", cat: "apicole", price: 30, img: "propolis.jpg" },
-            { id: 203, name: "Lăptișor de Matcă", cat: "apicole", price: 85, img: "laptisor.jpg" },
+            { id: 201, name: "Polen Crud / Uscat", cat: "apicole", price: 40, img: "polen.jpeg" },
+            { id: 202, name: "Propolis (Tinctură)", cat: "apicole", price: 30, img: "propolis.png" },
+            { id: 203, name: "Lăptișor de Matcă", cat: "apicole", price: 85, img: "laptisor.png" },
             { id: 204, name: "Mix Energizant", desc: "Miere + Nuci + Fructe", cat: "apicole", price: 55, img: "mix-energizant.jpg" },
 
             // --- COSMETICE NATURALE ---
@@ -399,7 +423,7 @@
             message += `\nTotal de plată: ${total} RON\n\nAdresa de livrare: ...`;
             
             // INTRODU AICI NUMĂRUL TĂU DE TELEFON (ex: 40722123456)
-            const phoneNumber = "40700000000"; 
+            const phoneNumber = "40771405886"; 
             
             const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
